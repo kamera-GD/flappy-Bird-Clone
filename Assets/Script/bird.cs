@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Bird : MonoBehaviour
 {
-
-    [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float jumpVelocity = 6f; // Vận tốc nảy lên tức thời chuẩn Flappy Bird
     [SerializeField] private float jumpCooldown = 0.15f;
 
     private Rigidbody2D rb;
@@ -19,9 +18,10 @@ public class Bird : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     private void Update()
     {
+        if (isDead) return;
+
         if (WasJumpPressed() && Time.time >= nextJumpTime)
         {
             jumpRequested = true;
@@ -38,11 +38,9 @@ public class Bird : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Kiểm tra xem vật đâm vào mình có script Bird hay không
         if (collision.gameObject.CompareTag("pipe"))
         {
-            Debug.Log("Collision with a pipe detected!");
-            isDead = true;
+            Die();
         }
     }
 
@@ -67,7 +65,8 @@ public class Bird : MonoBehaviour
 
         nextJumpTime = Time.time + jumpCooldown;
 
-        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        rb.linearVelocity = new Vector2(0f, jumpVelocity);
+        
         jumpRequested = false;
     }
 
@@ -75,6 +74,30 @@ public class Bird : MonoBehaviour
     {
         score++;
         Debug.Log("Score: " + score);
-    }    
+    }
 
+    private void Die()
+    {
+        if (isDead) return;
+        isDead = true;
+        Debug.Log("Bird đã chết!");
+
+        PipeSpawner spawner = FindFirstObjectByType<PipeSpawner>();
+        if (spawner != null)
+        {
+            spawner.StopSpawning();
+        }
+
+        MoveLeft[] activePipes = FindObjectsByType<MoveLeft>(FindObjectsSortMode.None);
+        foreach (MoveLeft pipe in activePipes)
+        {
+            pipe.enabled = false;
+        }
+
+        Animator anim = GetComponent<Animator>();
+        if (anim != null)
+        {
+            anim.enabled = false;
+        }
+    }
 }
