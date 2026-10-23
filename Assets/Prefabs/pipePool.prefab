@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7375947223044318591}
   - component: {fileID: 8644988742802137406}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: pipePool
   m_TagString: Untagged
   m_Icon: {fileID: 0}

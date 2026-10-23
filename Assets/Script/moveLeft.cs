@@ -6,8 +6,31 @@ public class MoveLeft : MonoBehaviour
     [SerializeField] private float speed = 3f;
     [SerializeField] private float leftBound = -10f;
 
+    private bool canMove = true;
+
+    private void OnEnable()
+    {
+        canMove = true;
+        // Đăng ký nghe sự kiện chim chết
+        Bird.OnBirdDied += HandleBirdDied;
+    }
+
+    private void OnDisable()
+    {
+        // Hủy đăng ký khi ống bị tắt (trả về pool)
+        Bird.OnBirdDied -= HandleBirdDied;
+    }
+
+    private void HandleBirdDied()
+    {
+        // Chim chết thì đóng băng di chuyển ngay tại chỗ
+        canMove = false;
+    }
+
     private void Update()
     {
+        if (!canMove) return;
+
         // 1. Di chuyển sang trái đều đặn độc lập với tốc độ khung hình (FPS)
         transform.position += Vector3.left * speed * Time.deltaTime;
 

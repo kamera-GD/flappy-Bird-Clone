@@ -4,23 +4,61 @@ using UnityEngine.InputSystem;
 
 public class Bird : MonoBehaviour
 {
+    // Kênh sự kiện: Bắn thông báo cho toàn bộ các script (Rotation, Spawner, MoveLeft...) khi chim chết
+    public static event Action OnBirdDied;
+
+    [Header("Jump Settings")]
     [SerializeField] private float jumpVelocity = 6f; // Vận tốc nảy lên tức thời chuẩn Flappy Bird
     [SerializeField] private float jumpCooldown = 0.15f;
 
     private Rigidbody2D rb;
     private bool jumpRequested = false;
     private float nextJumpTime = 0f;
+    private bool isPlaying = false; // Cờ kiểm tra game đã bấm Play hay chưa
     private bool isDead = false;
     private int score = 0;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        // Khi mới vào game (ở Menu): Khóa trọng lực để chim không rơi, góc thẳng 0 độ
+        if (rb != null)
+        {
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            rb.linearVelocity = Vector2.zero;
+        }
+        transform.rotation = Quaternion.identity;
+    }
+
+    private void OnEnable()
+    {
+        // Lắng nghe sự kiện bắt đầu game từ GameManager
+        GameManager.OnGameStarted += HandleGameStarted;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnGameStarted -= HandleGameStarted;
+    }
+
+    private void HandleGameStarted()
+    {
+        isPlaying = true;
+        isDead = false;
+
+        // Bật lại trọng lực cho chim rơi khi đã vào trận đấu
+        if (rb != null)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.linearVelocity = Vector2.zero;
+        }
     }
 
     private void Update()
     {
-        if (isDead) return;
+        // Chưa bấm Play hoặc chim đã chết thì KHÔNG nhận phím nhảy
+        if (!isPlaying || isDead) return;
 
         if (WasJumpPressed() && Time.time >= nextJumpTime)
         {
@@ -48,7 +86,7 @@ public class Bird : MonoBehaviour
     {
         if (other.CompareTag("score"))
         {
-            addScore();
+            AddScore();
         }
     }
 
@@ -64,13 +102,11 @@ public class Bird : MonoBehaviour
         if (isDead) return;
 
         nextJumpTime = Time.time + jumpCooldown;
-
         rb.linearVelocity = new Vector2(0f, jumpVelocity);
-        
         jumpRequested = false;
     }
 
-    private void addScore()
+    private void AddScore()
     {
         score++;
         Debug.Log("Score: " + score);
@@ -80,19 +116,11 @@ public class Bird : MonoBehaviour
     {
         if (isDead) return;
         isDead = true;
+        isPlaying = false;
         Debug.Log("Bird đã chết!");
 
-        PipeSpawner spawner = FindFirstObjectByType<PipeSpawner>();
-        if (spawner != null)
-        {
-            spawner.StopSpawning();
-        }
-
-        MoveLeft[] activePipes = FindObjectsByType<MoveLeft>(FindObjectsSortMode.None);
-        foreach (MoveLeft pipe in activePipes)
-        {
-            pipe.enabled = false;
-        }
+        // Phát thông báo chim chết cho toàn bộ hệ thống
+        OnBirdDied?.Invoke();
 
         Animator anim = GetComponent<Animator>();
         if (anim != null)

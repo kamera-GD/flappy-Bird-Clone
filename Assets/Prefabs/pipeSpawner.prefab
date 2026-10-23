@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8541524342972293014}
   - component: {fileID: 3011604071034920882}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: pipeSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,5 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PipeSpawner
   spawnRate: 1.5
   spawnPosX: 10
-  minY: -1.5
-  maxY: 2.5
+  minY: -4
+  maxY: 4

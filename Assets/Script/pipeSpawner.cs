@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 public class PipeSpawner : MonoBehaviour
@@ -12,11 +12,25 @@ public class PipeSpawner : MonoBehaviour
     [SerializeField] private float maxY = 2.5f;          // Độ cao tối đa của khe hở
 
     private Coroutine spawnCoroutine;
+    private WaitForSeconds waitSpawn;
 
-    private void Start()
+    private void Awake()
     {
-        // Bắt đầu chu kỳ sinh ống ngay khi vào game
-        StartSpawning();
+        // Cache lại để tránh rác bộ nhớ (Garbage Collector) mỗi vòng lặp
+        waitSpawn = new WaitForSeconds(spawnRate);
+    }
+
+    private void OnEnable()
+    {
+        // Lắng nghe sự kiện bắt đầu game và chim chết
+        GameManager.OnGameStarted += StartSpawning;
+        Bird.OnBirdDied += StopSpawning;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnGameStarted -= StartSpawning;
+        Bird.OnBirdDied -= StopSpawning;
     }
 
     public void StartSpawning()
@@ -39,13 +53,10 @@ public class PipeSpawner : MonoBehaviour
 
     private IEnumerator SpawnRoutine()
     {
-        // Vòng lặp vô tận chạy suốt màn chơi
         while (true)
         {
             SpawnPipe();
-
-            // Tạm dừng coroutine đúng bằng khoảng thời gian spawnRate rồi mới lặp lại
-            yield return new WaitForSeconds(spawnRate);
+            yield return waitSpawn;
         }
     }
 
@@ -62,7 +73,7 @@ public class PipeSpawner : MonoBehaviour
             // 3. Đặt vị trí xuất phát cho ống (ở ngoài mép phải màn hình)
             pipe.transform.position = new Vector3(spawnPosX, randomY, 0f);
 
-            // 4. Bật đối tượng lên! (Lúc này script MoveLeft trên ống sẽ tự động làm nó trôi sang trái)
+            // 4. Bật đối tượng lên (script MoveLeft trên ống sẽ tự động trôi sang trái)
             pipe.SetActive(true);
         }
     }
