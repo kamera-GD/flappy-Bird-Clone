@@ -14,6 +14,9 @@ public class Bird : MonoBehaviour
     [Header("UI")]
     [SerializeField] private ScoreDisplay scoreDisplay;
 
+    [Header("UI Menus")]
+    [SerializeField] private GameOverMenu gameOverMenu; // Kéo GameOverMenu vào đây
+
     private Rigidbody2D rb;
     private bool jumpRequested = false;
     private float nextJumpTime = 0f;
@@ -124,6 +127,11 @@ public class Bird : MonoBehaviour
         if (anim != null)
         {
             anim.enabled = false;
+        }
+
+        if (gameOverMenu != null)
+        {
+            gameOverMenu.ShowMenu(score);
         }
     }
 }
