@@ -40,10 +40,7 @@ public class BirdRotation : MonoBehaviour
         transform.eulerAngles = Vector3.zero;
     }
 
-    private void HandleBirdDied()
-    {
-        canRotate = false; // Chim chết: Dừng nhận input Space và ngừng xoay
-    }
+    private void HandleBirdDied() { canRotate = false; } // Chim chết: Dừng nhận input Space và ngừng xoay
 
     private void Update()
     {

@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveLeft
   speed: 3
-  leftBound: -10
+  leftBound: -13
 --- !u!1 &5460244139218040891
 GameObject:
   m_ObjectHideFlags: 0

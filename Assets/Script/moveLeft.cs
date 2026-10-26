@@ -15,17 +15,10 @@ public class MoveLeft : MonoBehaviour
         Bird.OnBirdDied += HandleBirdDied;
     }
 
-    private void OnDisable()
-    {
-        // Hủy đăng ký khi ống bị tắt (trả về pool)
-        Bird.OnBirdDied -= HandleBirdDied;
-    }
+    private void OnDisable() { Bird.OnBirdDied -= HandleBirdDied; } // Hủy đăng ký khi ống bị tắt (trả về pool)
 
-    private void HandleBirdDied()
-    {
-        // Chim chết thì đóng băng di chuyển ngay tại chỗ
-        canMove = false;
-    }
+
+    private void HandleBirdDied() { canMove = false; } // Chim chết thì đóng băng di chuyển ngay tại chỗ
 
     private void Update()
     {

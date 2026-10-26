@@ -11,6 +11,9 @@ public class Bird : MonoBehaviour
     [SerializeField] private float jumpVelocity = 6f; // Vận tốc nảy lên tức thời chuẩn Flappy Bird
     [SerializeField] private float jumpCooldown = 0.15f;
 
+    [Header("UI")]
+    [SerializeField] private ScoreDisplay scoreDisplay;
+
     private Rigidbody2D rb;
     private bool jumpRequested = false;
     private float nextJumpTime = 0f;
@@ -31,16 +34,31 @@ public class Bird : MonoBehaviour
         transform.rotation = Quaternion.identity;
     }
 
-    private void OnEnable()
+    private void Start()
     {
-        // Lắng nghe sự kiện bắt đầu game từ GameManager
-        GameManager.OnGameStarted += HandleGameStarted;
+        if (scoreDisplay != null)
+        {
+            scoreDisplay.UpdateScore(0);
+        }
     }
 
-    private void OnDisable()
+    private void Update()
     {
-        GameManager.OnGameStarted -= HandleGameStarted;
+        // Chưa bấm Play hoặc chim đã chết thì KHÔNG nhận phím nhảy
+        if (!isPlaying || isDead) return;
+
+        if (WasJumpPressed() && Time.time >= nextJumpTime) jumpRequested = true;
     }
+
+    private void FixedUpdate()
+    {
+        if (jumpRequested) Jump();
+    }
+
+    private void OnEnable() { GameManager.OnGameStarted += HandleGameStarted; } // Lắng nghe sự kiện bắt đầu game từ GameManager
+
+
+    private void OnDisable() { GameManager.OnGameStarted -= HandleGameStarted; }
 
     private void HandleGameStarted()
     {
@@ -55,39 +73,14 @@ public class Bird : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        // Chưa bấm Play hoặc chim đã chết thì KHÔNG nhận phím nhảy
-        if (!isPlaying || isDead) return;
-
-        if (WasJumpPressed() && Time.time >= nextJumpTime)
-        {
-            jumpRequested = true;
-        }    
-    }
-
-    private void FixedUpdate()
-    {
-        if (jumpRequested)
-        {
-            Jump();
-        }
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("pipe"))
-        {
-            Die();
-        }
+        if (collision.gameObject.CompareTag("pipe")) Die();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("score"))
-        {
-            AddScore();
-        }
+        if (other.CompareTag("score")) AddScore();
     }
 
     private bool WasJumpPressed()
@@ -110,6 +103,11 @@ public class Bird : MonoBehaviour
     {
         score++;
         Debug.Log("Score: " + score);
+
+        if (scoreDisplay != null)
+        {
+            scoreDisplay.UpdateScore(score);
+        }
     }
 
     private void Die()

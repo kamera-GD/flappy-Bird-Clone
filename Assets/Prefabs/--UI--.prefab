@@ -32,6 +32,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 628381357597998315}
+  - {fileID: 5014073619114162473}
   m_Father: {fileID: 5337865257018957775}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -115,7 +116,7 @@ GameObject:
   - component: {fileID: 6560966783203026129}
   - component: {fileID: 141342415657768427}
   m_Layer: 5
-  m_Name: playBottom
+  m_Name: playButtom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -538,3 +539,106 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &5466229360504195783
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5014073619114162473}
+  - component: {fileID: 301291756497042161}
+  - component: {fileID: 9094394773636072578}
+  - component: {fileID: 4493508978504746579}
+  m_Layer: 5
+  m_Name: scoreContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5014073619114162473
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5466229360504195783}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1723667895466928644}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -100}
+  m_SizeDelta: {x: 0, y: 60}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &301291756497042161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5466229360504195783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_Spacing: 5
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
+--- !u!114 &9094394773636072578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5466229360504195783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
+  m_HorizontalFit: 2
+  m_VerticalFit: 0
+--- !u!114 &4493508978504746579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5466229360504195783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de077e5ae23cce344b5824a2162d03e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScoreDisplay
+  scoreContainer: {fileID: 5014073619114162473}
+  digitPrefab: {fileID: 9183023975984845504, guid: 71c37c919285994468999236dadc16d8, type: 3}
+  digitSprites:
+  - {fileID: 5088316998373936774, guid: 4ba55dbf0a506c947a19d9ac3d94ba99, type: 3}
+  - {fileID: -855298285791758126, guid: 0044567c4432ac044893d0d374956417, type: 3}
+  - {fileID: 6937817954938267909, guid: fae8147abed8e6c4bab5abd064b7a338, type: 3}
+  - {fileID: -6470460504253458178, guid: 05e226c34c64f444aa8cb135ef397422, type: 3}
+  - {fileID: -4178046375966092550, guid: 749875f8072a876408a782fb2051b532, type: 3}
+  - {fileID: 4130640169021434097, guid: 02448ef18fa13e042a57f42d534d2237, type: 3}
+  - {fileID: 3465286685962602723, guid: 28ecfd4128b2bf3428c156f9b7adb6ad, type: 3}
+  - {fileID: 7028616704906629411, guid: 3bcfaca07b0007f43b87b94a4824a890, type: 3}
+  - {fileID: 8288426215254106694, guid: b435cd08d8d3df7459ca001c142836c4, type: 3}
+  - {fileID: 4113829005332862926, guid: 40cbe2383de5ce3459a2c503f162940d, type: 3}
